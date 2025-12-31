@@ -3,6 +3,7 @@ import { roomType } from "@repo/zod-types/types";
 import { Request, Response } from "express";
 import { generateSlug } from "../utils/generateSlug";
 
+// Create a new room
 export const createRoom = async (req: Request, res: Response) => {
   // Zod validation
   const result = roomType.safeParse(req.body);
@@ -25,5 +26,23 @@ export const createRoom = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Error in creating room" });
+  }
+};
+
+// Get room chats
+export const getRoomChats = async (req: Request, res: Response) => {
+  const roomId = req.params.roomId;
+
+  try {
+    const chats = await prisma.chat.findMany({
+      where: { roomId },
+      take: 50,
+      orderBy: { id: "desc" },
+    });
+
+    res.json({ chats });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Error while fetching chats" });
   }
 };
