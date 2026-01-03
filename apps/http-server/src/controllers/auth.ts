@@ -9,6 +9,7 @@ export const handleSignup = async (req: Request, res: Response) => {
   // Zod validation
   const result = signupType.safeParse(req.body);
   if (!result.success) {
+    console.log(result.error);
     return res.status(400).json({ error: "Invaild inputs" });
   }
 
@@ -57,7 +58,8 @@ export const handleSignin = async (req: Request, res: Response) => {
     }
 
     // Generate token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!);
+    // @ts-ignore
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 
     res.status(200).json(token);
   } catch (error) {

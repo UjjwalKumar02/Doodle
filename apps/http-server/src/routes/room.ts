@@ -1,11 +1,15 @@
 import { Router } from "express";
-import { createRoom, getRoomChats } from "../controllers/room";
+import { createRoom, getRoomShapes } from "../controllers/room";
 import { authMiddleware } from "../middlewares/authMiddleware";
 
-const router : Router = Router();
+const router: Router = Router();
 
-router.post("/create-room",authMiddleware, createRoom)
+router.post("/create-room", authMiddleware, createRoom);
 
-router.get("/:roomId/chats", authMiddleware, getRoomChats)
+// router.get("/:slug/chats", getRoomChats);
+
+// router.get("/:roomId/slug", authMiddleware, getRoomSlug);
+
+router.get("/room/:roomId", authMiddleware, getRoomShapes);
 
 export default router;

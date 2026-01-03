@@ -1,9 +1,16 @@
 import express from "express";
 import authRouter from "./routes/auth";
 import roomRouter from "./routes/room";
+import cors from "cors";
 import "dotenv/config";
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 const PORT = process.env.PORT;
 
 app.use(express.json());

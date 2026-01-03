@@ -7,6 +7,7 @@ interface ButtonProps {
   onClick: () => void;
   fullWidth?: boolean;
   className?: string;
+  loading?: boolean;
 }
 
 export const Button = ({
@@ -16,6 +17,7 @@ export const Button = ({
   onClick,
   fullWidth,
   className,
+  loading,
 }: ButtonProps) => {
   const variantStyles = {
     primary: "bg-sky-500 text-white",
@@ -28,14 +30,15 @@ export const Button = ({
     lg: "px-7 py-2",
   };
 
-  const defaultStyles = "rounded-xl";
+  const defaultStyles = "rounded-lg cursor-pointer";
 
   return (
     <button
       className={`${defaultStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${fullWidth ? "w-full" : ""}  ${className}`}
       onClick={onClick}
+      disabled={loading}
     >
-      {name}
+      {loading ? "loading..." : name}
     </button>
   );
 };

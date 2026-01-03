@@ -10,7 +10,8 @@ export function authMiddleware(
 
   if (!token) return res.status(400).json({ error: "Token not found" });
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  // @ts-ignore
+  const decoded: any = jwt.verify(token, process.env.JWT_SECRET);
 
   // Token vaidation checks
   if (typeof decoded == "string") {

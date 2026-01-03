@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 export function verifyToken(token: string) {
   const decoded = jwt.verify(token, process.env.JWT_SECRET!);

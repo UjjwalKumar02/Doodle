@@ -33,6 +33,7 @@ wss.on("connection", (socket, req) => {
   socket.on("message", async (req) => {
     const message = JSON.parse(req.toString());
 
+    // Join room
     if (message.type === "join_room") {
       const user = data.find((d) => d.ws === socket);
       if (!user) {
@@ -52,6 +53,7 @@ wss.on("connection", (socket, req) => {
       user.room.push(message.roomId);
     }
 
+    // Leave room
     if (message.type === "leave_room") {
       const user = data.find((d) => d.ws === socket);
       if (!user) {
@@ -61,10 +63,11 @@ wss.on("connection", (socket, req) => {
       user.room = user.room.filter((r) => r != message.roomId);
     }
 
+    // Incoming message: Saving in DB and sending to members
     if (message.type === "chat") {
       await prisma.chat.create({
         data: {
-          content: message.chat,
+          content: message.content,
           roomId: message.roomId,
           createdById: userId,
         },
@@ -72,7 +75,7 @@ wss.on("connection", (socket, req) => {
 
       data.forEach((d) => {
         if (d.room.includes(message.roomId)) {
-          d.ws.send(message.chat);
+          d.ws.send(message.content);
         }
       });
     }
